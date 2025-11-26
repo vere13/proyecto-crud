@@ -13,11 +13,8 @@ app.use(express.json());           //Leer JSON deñ body
 
 //Configurar conexión a base de datos
 const pool = new Pool({
-    host:process.env.DB_HOST || 'postgres-db',
-    port:5432,
-    database: process.env.DB_NAME || 'crud_db',
-    user: process.env.DB_USER || 'postgres',
-    password: process.env.DB_PASSWORD || 'postgres'
+    connectionString: process.env.DATABASE_URL,
+    ssl: { rejectUnauthorized: false }
 });
 
 //GET /api/users-Obtener todos los usuarios
