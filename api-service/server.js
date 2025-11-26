@@ -17,6 +17,23 @@ const pool = new Pool({
     ssl: { rejectUnauthorized: false }
 });
 
+// Crear tabla si no existe (al iniciar)
+pool.query(`
+    CREATE TABLE IF NOT EXISTS users (
+        id SERIAL PRIMARY KEY,
+        nombre TEXT,
+        correo TEXT
+    )
+`)
+.then(() => console.log('Tabla users lista'))
+.catch(err => console.error('Error creando tabla:', err));
+
+//Iniciar servidor en puerto 3000
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en puerto ${PORT}`);
+});
+
+
 //GET /api/users-Obtener todos los usuarios
 app.get('/api/users', async(req, res) => {
     try{
@@ -72,18 +89,5 @@ app.delete('/api/users/:id', async (req, res) => {
    } catch (err) { res.status(500).json({ error:err.message }); }
 });
 
-//Iniciar servidor en puerto 3000
-app.listen(PORT, () => {
-    console.log('Servidor corriendo en puerto ${PORT}');
-});
 
-// Crear tabla si no existe (al iniciar)
-pool.query(`
-    CREATE TABLE IF NOT EXISTS users (
-        id SERIAL PRIMARY KEY,
-        nombre TEXT,
-        correo TEXT
-    )
-`)
-.then(() => console.log('Tabla users lista'))
-.catch(err => console.error('Error creando tabla:', err));
+
